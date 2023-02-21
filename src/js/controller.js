@@ -5,6 +5,9 @@ import recipeView from './views/recipeView';
 import searchViews from './views/searchView';
 import resultsView from './views/resultsView';
 
+if (module.hot) {
+  module.hot.accept();
+}
 // controlRecipes();
 
 
@@ -37,7 +40,7 @@ const controlSearchResult = async function() {
 
     await model.loadSearch(queryString);
     await resultsView.render(model.state.search.results)
-    console.log(model.state.search.results);
+    // console.log(model.state.search.results);
   } catch (e) {
     console.error(e);
 
