@@ -10,7 +10,6 @@ class PaginationView extends Views {
       const btn = e.target.closest('.btn--inline');
       if (!btn) return
       const goToPage = +btn.dataset.goto;
-      console.log(goToPage);
       handler(goToPage);
     });
   }
@@ -18,7 +17,6 @@ class PaginationView extends Views {
   _generateMarkup() {
     const numberOfPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
 
-    console.log(this._data.results.length, this._data.resultsPerPage);
     console.log(numberOfPages);
     //Page 1, and there are other pages
     let currentPage = this._data.page;

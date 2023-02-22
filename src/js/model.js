@@ -1,6 +1,16 @@
 import { API_URL, RESULTS_PER_PAGE } from './config';
 import { getJSON } from './helper';
 
+export function updateServings(newServings) {
+  // if (!!state.recipe) return;
+  console.log(state.recipe.ingredients);
+  state.recipe.ingredients.forEach(ingredient => {
+    ingredient.quantity = (ingredient.quantity * newServings / state.recipe.servings);
+  });
+  state.recipe.servings = newServings;
+}
+
+
 export const state = {
 
   recipe: {},
@@ -19,7 +29,7 @@ export const loadRecipe = async function(id) {
   try {
 
     const data = await getJSON(`${API_URL}${id}`);
-
+    console.log(data);
     const { recipe } = data.data;
     state.recipe = {
       id: recipe.id,
@@ -31,7 +41,7 @@ export const loadRecipe = async function(id) {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients
     };
-    console.log(data);
+    console.log(state.recipe);
   } catch (e) {
     console.error(`${e} 💥💥💥`);
     throw e;
@@ -42,6 +52,7 @@ export const loadSearch = async function(query) {
   try {
     state.search.query = query;
     const data = await getJSON(`${API_URL}?search=${query}`);
+    console.log(data);
     state.search.results = data.data.recipes.map(recipe => {
       return {
         id: recipe.id,
