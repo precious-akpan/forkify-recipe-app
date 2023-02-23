@@ -14,7 +14,6 @@ export default class Views {
   }
 
   update(data) {
-    if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
     this._data = data;
     const newMarkup = this._generateMarkup();
     const newDom = document.createRange().createContextualFragment(newMarkup);
@@ -29,7 +28,6 @@ export default class Views {
       }
 //UPDATE CHANGED ATTRIBUTE
       if (!newElement.isEqualNode(currentElement)) {
-        console.log(newElement.attributes);
         Array.from(newElement.attributes).forEach(attribute => currentElement.setAttribute(attribute.name, attribute.value));
       }
 
