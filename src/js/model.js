@@ -3,7 +3,6 @@ import { getJSON } from './helper';
 
 export function updateServings(newServings) {
   // if (!!state.recipe) return;
-  console.log(state.recipe.ingredients);
   state.recipe.ingredients.forEach(ingredient => {
     ingredient.quantity = (ingredient.quantity * newServings / state.recipe.servings);
   });
