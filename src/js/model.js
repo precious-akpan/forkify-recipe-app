@@ -1,5 +1,5 @@
 import { API_URL, KEY, RESULTS_PER_PAGE } from './config';
-import { getJSON, sendJSON } from './helper';
+import { AJAX } from './helper';
 
 export async function uploadRecipe(newRecipe) {
   try {
@@ -20,8 +20,9 @@ export async function uploadRecipe(newRecipe) {
       ingredients
     };
 
-   const data = await sendJSON(`${API_URL}?key=${KEY}`,recipe)
-    console.log(data);
+    const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
+    state.recipe = createRecipeObject(data)
+    addBookmark(state.recipe)
   } catch (e) {
     throw e;
   }
@@ -56,22 +57,28 @@ function persistBookmarks() {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 }
 
+function createRecipeObject(data) {
+  const { recipe } = data.data;
+  return {
+    id: recipe.id,
+    title: recipe.title,
+    publisher: recipe.publisher,
+    sourceUrl: recipe.source_url,
+    image: recipe.image_url,
+    servings: recipe.servings,
+    cookingTime: recipe.cooking_time,
+    ingredients: recipe.ingredients,
+  ...(recipe.key && {key: recipe.key})
+  };
+}
+
 export const loadRecipe = async function(id) {
 
   try {
 
-    const data = await getJSON(`${API_URL}${id}`);
-    const { recipe } = data.data;
-    state.recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients
-    };
+    const data = await AJAX(`${API_URL}${id}`);
+    state.recipe = createRecipeObject(data);
+    console.log(state.recipe);
 
     state.recipe.bookmarked = state.bookmarks.some(bookmark => bookmark.id === state.recipe.id);
 
@@ -84,7 +91,7 @@ export const loadRecipe = async function(id) {
 export const loadSearch = async function(query) {
   try {
     state.search.query = query;
-    const data = await getJSON(`${API_URL}?search=${query}`, uploadData);
+    const data = await AJAX(`${API_URL}?search=${query}`);
     state.search.results = data.data.recipes.map(recipe => {
       return {
         id: recipe.id,

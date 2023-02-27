@@ -1,4 +1,5 @@
 import * as model from './model';
+import { MODAL_CLOSE_TIME_SEC } from './config';
 import recipeView from './views/recipeView';
 // import 'core-js';
 // import 'regenerator-runtime/runtime';
@@ -92,12 +93,29 @@ function controlBookmarks() {
 async function controlAddRecipe(newRecipe) {
 
   try {
+
+    addRecipeView.renderSpinner()
     await model.uploadRecipe(newRecipe);
+
+    //render recipe
+    recipeView.render(model.state.recipe);
+
+
+    //successful message
+    addRecipeView.renderMessage()
+
+    //close modal widow
+    setTimeout(() => addRecipeView.toggleWindow(), MODAL_CLOSE_TIME_SEC * 1000);
+
+    bookmarksView.render(model.state.bookmarks)
+
+    //change ID in URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`)
+    console.log(model.state.recipe);
   } catch (e) {
     console.error('🥵', e);
     addRecipeView.renderError(e.message);
   }
-  console.log(newRecipe);
 }
 
 const init = function() {
