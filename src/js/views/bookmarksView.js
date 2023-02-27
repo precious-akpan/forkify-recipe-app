@@ -8,8 +8,11 @@ class BookmarksView extends Views {
 
   _message = '';
 
+  addHandlerRender(handler) {
+    window.addEventListener('load', handler)
+  }
+
   _generateMarkup() {
-    console.log(this._data.map(bookmark => previewView.render(bookmark, false)).join(''));
     return this._data.map(bookmark => previewView.render(bookmark, false)).join('');
   }
 

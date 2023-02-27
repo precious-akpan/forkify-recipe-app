@@ -109,7 +109,7 @@ class RecipeView extends Views {
             </li>`;
   };
 
-  addHandleRender(handler) {
+  addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(evt => window.addEventListener(evt, handler));
   }
 
