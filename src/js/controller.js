@@ -127,7 +127,7 @@ const init = function() {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   addRecipeView.addHandlerUpload(controlAddRecipe);
 
-  console.log('Welcome!');
+  console.log('Welcome to the application!');
 };
 
 init();
