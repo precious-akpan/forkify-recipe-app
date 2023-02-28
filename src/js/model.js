@@ -4,7 +4,8 @@ import { AJAX } from './helper';
 export async function uploadRecipe(newRecipe) {
   try {
     const ingredients = Object.entries(newRecipe).filter(ingredient => ingredient[0].startsWith('ingredient') && ingredient[1] !== '').map(ingredient => {
-      const ingredientsArray = ingredient[1].replaceAll(' ', '').split(',');
+      const ingredientsArray = ingredient[1].split(',').map(element => element.trim());
+      // const ingredientsArray = ingredient[1].replaceAll(' ', '').split(',');
       if (ingredientsArray.length !== 3) throw new Error('Wrong ingredients format! Please use the correct format!');
       const [quantity, unit, description] = ingredientsArray;
       return { quantity: quantity ? +quantity : null, unit, description };
@@ -76,7 +77,7 @@ export const loadRecipe = async function(id) {
 
   try {
 
-    const data = await AJAX(`${API_URL}${id}`);
+    const data = await AJAX(`${API_URL}${id}?key=${KEY}`);
     state.recipe = createRecipeObject(data);
     console.log(state.recipe);
 
@@ -88,16 +89,18 @@ export const loadRecipe = async function(id) {
   }
 };
 
-export const loadSearch = async function(query) {
+export const loadSearchResult = async function(query) {
   try {
     state.search.query = query;
-    const data = await AJAX(`${API_URL}?search=${query}`);
+    const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
+    console.log(data);
     state.search.results = data.data.recipes.map(recipe => {
       return {
         id: recipe.id,
         title: recipe.title,
         publisher: recipe.publisher,
-        image: recipe.image_url
+        image: recipe.image_url,
+        ...(recipe.key && {key: recipe.key})
       };
     });
     state.search.page = 1;

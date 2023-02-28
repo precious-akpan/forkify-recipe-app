@@ -44,7 +44,7 @@ const controlSearchResult = async function() {
 
     if (!queryString) return;
 
-    await model.loadSearch(queryString);
+    await model.loadSearchResult(queryString);
 
     await resultsView.render(model.getSearchResultsPage());
 
@@ -126,6 +126,8 @@ const init = function() {
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   addRecipeView.addHandlerUpload(controlAddRecipe);
+
+  console.log('Welcome!');
 };
 
 init();
