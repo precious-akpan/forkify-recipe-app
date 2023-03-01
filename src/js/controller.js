@@ -1,18 +1,14 @@
 import * as model from './model';
 import { MODAL_CLOSE_TIME_SEC } from './config';
 import recipeView from './views/recipeView';
-// import 'core-js';
-// import 'regenerator-runtime/runtime';
+import 'core-js';
+import 'regenerator-runtime/runtime';
 import searchViews from './views/searchView';
 import resultsView from './views/resultsView';
 import bookmarksView from './views/bookmarksView';
 import addRecipeView from './views/addRecipeView';
 import paginationView from './views/paginationView';
 
-if (module.hot) {
-  module.hot.accept();
-}
-// controlRecipes();
 
 
 const controlRecipes = async () => {
